@@ -3,6 +3,7 @@ package com.jonataslaet.healthcare.services;
 import com.jonataslaet.healthcare.controllers.dtos.PatientRecordDTO;
 import com.jonataslaet.healthcare.entities.Patient;
 import com.jonataslaet.healthcare.exceptions.DuplicationException;
+import com.jonataslaet.healthcare.exceptions.ResourceNotFoundException;
 import com.jonataslaet.healthcare.factories.PatientFactory;
 import com.jonataslaet.healthcare.repositories.PatientRepository;
 import org.junit.jupiter.api.Test;
@@ -61,5 +62,36 @@ public class PatientServiceTests {
         verify(patientRepository, times(1)).existsByEmail(any());
         verify(patientRepository, never()).save(any());
     }
+
+    @Test
+    void getPatientById_shouldReturnDTOWhenFound() {
+
+        Patient saved = PatientFactory.createSavedPatientEntity();
+
+        when(patientRepository.findById(PatientFactory.existingPatientId))
+            .thenReturn(java.util.Optional.of(saved));
+
+        PatientRecordDTO result = patientService.getPatientById(PatientFactory.existingPatientId);
+
+        verify(patientRepository).findById(1L);
+
+        assertThat(result)
+            .usingRecursiveComparison()
+            .isEqualTo(saved);
+    }
+
+    @Test
+    void getPatientById_shouldThrowWhenNotFound() {
+
+        when(patientRepository.findById(PatientFactory.nonExistingPatientId))
+            .thenReturn(java.util.Optional.empty());
+
+        assertThatThrownBy(() -> patientService.getPatientById(PatientFactory.nonExistingPatientId))
+            .isInstanceOf(ResourceNotFoundException.class)
+            .hasMessageContaining("Paciente não encontrado");
+
+        verify(patientRepository).findById(PatientFactory.nonExistingPatientId);
+    }
+
 
 }

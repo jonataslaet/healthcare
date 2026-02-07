@@ -2,6 +2,7 @@ package com.jonataslaet.healthcare.handlers;
 
 import com.jonataslaet.healthcare.controllers.dtos.StandardError;
 import com.jonataslaet.healthcare.exceptions.DuplicationException;
+import com.jonataslaet.healthcare.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.jspecify.annotations.NonNull;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,19 @@ import java.time.Instant;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<@NonNull StandardError> handleResourceNotFoundException(ResourceNotFoundException ex,
+        HttpServletRequest httpServletRequest) {
+        StandardError standardError = new StandardError();
+        standardError.setTimestamp(Instant.now());
+        standardError.setStatus(HttpStatus.NOT_FOUND.value());
+        standardError.setError("Recurso não encontrado");
+        standardError.setMessage(ex.getMessage());
+        standardError.setPath(httpServletRequest.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND.value()).body(standardError);
+    }
 
     @ExceptionHandler(DuplicationException.class)
     public ResponseEntity<@NonNull StandardError> handleDuplicationException(

@@ -3,6 +3,7 @@ package com.jonataslaet.healthcare.services;
 import com.jonataslaet.healthcare.controllers.dtos.PatientRecordDTO;
 import com.jonataslaet.healthcare.entities.Patient;
 import com.jonataslaet.healthcare.exceptions.DuplicationException;
+import com.jonataslaet.healthcare.exceptions.ResourceNotFoundException;
 import com.jonataslaet.healthcare.mappers.PatientMapper;
 import com.jonataslaet.healthcare.repositories.PatientRepository;
 import org.springframework.stereotype.Service;
@@ -27,4 +28,13 @@ public class PatientService {
         return PatientMapper.toDTO(patientRepository.save(patient));
     }
 
+    public PatientRecordDTO getPatientById(Long patientId) {
+        Patient patient = getPatientEntity(patientId);
+        return PatientMapper.toDTO(patient);
+    }
+
+    public Patient getPatientEntity(Long patientId) {
+        return patientRepository.findById(patientId).orElseThrow(() ->
+            new ResourceNotFoundException("Paciente não encontrado"));
+    }
 }

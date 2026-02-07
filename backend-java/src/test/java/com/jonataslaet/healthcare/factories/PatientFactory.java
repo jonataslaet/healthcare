@@ -11,6 +11,9 @@ import java.time.Month;
 
 public final class PatientFactory {
 
+    public static final Long existingPatientId = 1L;
+    public static final Long nonExistingPatientId = 999L;
+
     public static Patient createSavedPatientEntity() {
         Patient patient = new Patient();
         BeanUtils.copyProperties(createSavedPatientRecord(), patient);
