@@ -1,0 +1,39 @@
+name: CI do Backend
+
+on:
+  push:
+    branches: ["**"]
+    paths:
+      - 'backend-java/**'
+      - '.github/workflows/**'
+
+  pull_request:
+    paths:
+      - 'backend-java/**'
+      - '.github/workflows/**'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup JDK 21 (Temurin) + Maven cache
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: 'maven'
+
+      - name: Make mvnw executable
+        working-directory: backend-java
+        run: chmod +x mvnw
+
+      - name: Build & Tests
+        working-directory: backend-java
+        env:
+          SPRING_PROFILES_ACTIVE: test
+        run: |
+          ./mvnw -B -U --no-transfer-progress clean verify
