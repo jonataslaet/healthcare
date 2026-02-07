@@ -38,4 +38,18 @@ public final class PatientFactory {
             "jonataslaetprogramador@gmail.com", LocalDate.of(1993, Month.MARCH, 5),
             GenderEnum.MALE, new BigDecimal("92.3"), new BigDecimal("1.69"));
     }
+
+    public static String createJsonNonSavedPatientRecordWithInvalidGender() {
+        return """
+        {
+          "fullname": "Jonatas Blendo dos Santos Laet",
+          "email": "jonataslaetprogramador@gmail.com",
+          "birthDate": "1993-03-05",
+          "gender": "INVALID",
+          "weight": 92.3,
+          "height": 1.69
+        }
+        """;
+    }
+
 }

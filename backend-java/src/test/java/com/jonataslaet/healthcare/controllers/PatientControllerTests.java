@@ -16,12 +16,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.ObjectMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ActiveProfiles("test")
@@ -42,24 +40,15 @@ class PatientControllerTests {
 
         PatientRecordDTO dto = PatientFactory.createNonSavedPatientRecord();
 
-        when(patientService.createPatient(any()))
-            .thenReturn(dto);
+        when(patientService.createPatient(any())).thenReturn(dto);
 
-        String responseJson =
-            mockMvc.perform(post("/patients")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(status().isCreated())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
+        String responseJson = mockMvc.perform(post("/patients")
+            .contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(dto)))
+            .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
 
-        PatientRecordDTO response =
-            objectMapper.readValue(responseJson, PatientRecordDTO.class);
+        PatientRecordDTO response = objectMapper.readValue(responseJson, PatientRecordDTO.class);
 
-        assertThat(response)
-            .usingRecursiveComparison()
-            .isEqualTo(dto);
+        assertThat(response).usingRecursiveComparison().isEqualTo(dto);
     }
 
     @Test
@@ -67,14 +56,19 @@ class PatientControllerTests {
 
         PatientRecordDTO dto = PatientFactory.createNonSavedPatientRecord();
 
-        when(patientService.createPatient(any()))
-            .thenThrow(new DuplicationException("Esse email já existe"));
+        when(patientService.createPatient(any())).thenThrow(new DuplicationException("Esse email já existe"));
 
-        mockMvc.perform(post("/patients")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(dto)))
-            .andExpect(status().isConflict())
-            .andExpect(content().string(containsString("Esse email já existe")));
+        String responseJson = mockMvc.perform(post("/patients")
+            .contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(dto)))
+            .andExpect(status().isConflict()).andReturn().getResponse().getContentAsString();
+
+        StandardError error = objectMapper.readValue(responseJson, StandardError.class);
+
+        assertThat(error.getStatus()).isEqualTo(409);
+        assertThat(error.getError()).isEqualTo("Erro de requisição");
+        assertThat(error.getMessage()).contains("Esse email já existe");
+        assertThat(error.getPath()).isEqualTo("/patients");
+        assertThat(error.getTimestamp()).isNotNull();
     }
 
     @Test
@@ -84,19 +78,12 @@ class PatientControllerTests {
 
         when(patientService.getPatientById(PatientFactory.existingPatientId)).thenReturn(dto);
 
-        String responseJson =
-            mockMvc.perform(get("/patients/{id}", PatientFactory.existingPatientId))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
+        String responseJson = mockMvc.perform(get("/patients/{id}", PatientFactory.existingPatientId))
+            .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
-        PatientRecordDTO response =
-            objectMapper.readValue(responseJson, PatientRecordDTO.class);
+        PatientRecordDTO response = objectMapper.readValue(responseJson, PatientRecordDTO.class);
 
-        assertThat(response)
-            .usingRecursiveComparison()
-            .isEqualTo(dto);
+        assertThat(response).usingRecursiveComparison().isEqualTo(dto);
     }
 
     @Test
@@ -105,12 +92,8 @@ class PatientControllerTests {
         when(patientService.getPatientById(PatientFactory.nonExistingPatientId))
             .thenThrow(new ResourceNotFoundException("Paciente não encontrado"));
 
-        String responseJson =
-            mockMvc.perform(get("/patients/{id}", PatientFactory.nonExistingPatientId))
-                .andExpect(status().isNotFound())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
+        String responseJson = mockMvc.perform(get("/patients/{id}", PatientFactory.nonExistingPatientId))
+            .andExpect(status().isNotFound()).andReturn().getResponse().getContentAsString();
 
         StandardError error = objectMapper.readValue(responseJson, StandardError.class);
 
@@ -118,6 +101,22 @@ class PatientControllerTests {
         assertThat(error.getError()).isEqualTo("Recurso não encontrado");
         assertThat(error.getMessage()).contains("Paciente não encontrado");
         assertThat(error.getPath()).isEqualTo("/patients/"+PatientFactory.nonExistingPatientId);
+        assertThat(error.getTimestamp()).isNotNull();
+    }
+
+    @Test
+    void shouldReturn400WhenGenderIsInvalid() throws Exception {
+
+        String jsonPatient = PatientFactory.createJsonNonSavedPatientRecordWithInvalidGender();
+        String responseJson = mockMvc.perform(post("/patients").contentType(MediaType.APPLICATION_JSON)
+            .content(jsonPatient)).andExpect(status().isBadRequest()).andReturn().getResponse().getContentAsString();
+
+        StandardError error = objectMapper.readValue(responseJson, StandardError.class);
+
+        assertThat(error.getStatus()).isEqualTo(400);
+        assertThat(error.getError()).isEqualTo("Erro de requisição");
+        assertThat(error.getMessage()).contains("O valor INVALID é inválido");
+        assertThat(error.getPath()).isEqualTo("/patients");
         assertThat(error.getTimestamp()).isNotNull();
     }
 

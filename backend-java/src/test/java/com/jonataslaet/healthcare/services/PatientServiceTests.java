@@ -13,6 +13,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -42,9 +44,7 @@ public class PatientServiceTests {
         verify(patientRepository, times(1)).existsByEmail(any());
         verify(patientRepository, times(1)).save(any());
 
-        assertThat(result)
-            .usingRecursiveComparison()
-            .isEqualTo(savedEntity);
+        assertThat(result).usingRecursiveComparison().isEqualTo(savedEntity);
     }
 
     @Test
@@ -52,12 +52,10 @@ public class PatientServiceTests {
 
         PatientRecordDTO input = PatientFactory.createNonSavedPatientRecord();
 
-        when(patientRepository.existsByEmail(input.email()))
-            .thenReturn(true);
+        when(patientRepository.existsByEmail(input.email())).thenReturn(true);
 
         assertThatThrownBy(() -> patientService.createPatient(input))
-            .isInstanceOf(DuplicationException.class)
-            .hasMessageContaining("Esse email já existe");
+            .isInstanceOf(DuplicationException.class).hasMessageContaining("Esse email já existe");
 
         verify(patientRepository, times(1)).existsByEmail(any());
         verify(patientRepository, never()).save(any());
@@ -73,22 +71,18 @@ public class PatientServiceTests {
 
         PatientRecordDTO result = patientService.getPatientById(PatientFactory.existingPatientId);
 
-        verify(patientRepository).findById(1L);
+        verify(patientRepository).findById(PatientFactory.existingPatientId);
 
-        assertThat(result)
-            .usingRecursiveComparison()
-            .isEqualTo(saved);
+        assertThat(result).usingRecursiveComparison().isEqualTo(saved);
     }
 
     @Test
     void getPatientById_shouldThrowWhenNotFound() {
 
-        when(patientRepository.findById(PatientFactory.nonExistingPatientId))
-            .thenReturn(java.util.Optional.empty());
+        when(patientRepository.findById(PatientFactory.nonExistingPatientId)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> patientService.getPatientById(PatientFactory.nonExistingPatientId))
-            .isInstanceOf(ResourceNotFoundException.class)
-            .hasMessageContaining("Paciente não encontrado");
+            .isInstanceOf(ResourceNotFoundException.class).hasMessageContaining("Paciente não encontrado");
 
         verify(patientRepository).findById(PatientFactory.nonExistingPatientId);
     }

@@ -18,14 +18,14 @@ public class PatientController {
     }
 
     @PostMapping
-    public ResponseEntity<@NonNull PatientRecordDTO> createUser(
+    public ResponseEntity<@NonNull PatientRecordDTO> createPatient(
         @RequestBody PatientRecordDTO patientRecordDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(patientService.createPatient(patientRecordDTO));
     }
 
     @GetMapping("/{patientId}")
-    public ResponseEntity<@NonNull PatientRecordDTO> getOperationById(@PathVariable("patientId") Long patientId) {
-        PatientRecordDTO foundOperation = patientService.getPatientById(patientId);
-        return ResponseEntity.ok(foundOperation);
+    public ResponseEntity<@NonNull PatientRecordDTO> getPatientById(@PathVariable("patientId") Long patientId) {
+        PatientRecordDTO foundPatient = patientService.getPatientById(patientId);
+        return ResponseEntity.ok(foundPatient);
     }
 }
