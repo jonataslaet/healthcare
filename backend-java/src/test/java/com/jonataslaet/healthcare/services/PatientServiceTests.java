@@ -2,6 +2,7 @@ package com.jonataslaet.healthcare.services;
 
 import com.jonataslaet.healthcare.controllers.dtos.PatientRecordDTO;
 import com.jonataslaet.healthcare.entities.Patient;
+import com.jonataslaet.healthcare.exceptions.DuplicationException;
 import com.jonataslaet.healthcare.factories.PatientFactory;
 import com.jonataslaet.healthcare.repositories.PatientRepository;
 import org.junit.jupiter.api.Test;
@@ -54,7 +55,7 @@ public class PatientServiceTests {
             .thenReturn(true);
 
         assertThatThrownBy(() -> patientService.createPatient(input))
-            .isInstanceOf(IllegalArgumentException.class)
+            .isInstanceOf(DuplicationException.class)
             .hasMessageContaining("Esse email já existe");
 
         verify(patientRepository, times(1)).existsByEmail(any());

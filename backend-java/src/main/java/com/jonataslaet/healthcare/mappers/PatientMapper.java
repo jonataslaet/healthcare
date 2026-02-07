@@ -9,7 +9,6 @@ public class PatientMapper {
     public static Patient toEntity(PatientRecordDTO patientRecordDTO) {
         Patient patient = new Patient();
         BeanUtils.copyProperties(patientRecordDTO, patient);
-        patient.setId(1L);
         return patient;
     }
 

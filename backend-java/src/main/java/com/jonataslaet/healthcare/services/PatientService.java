@@ -2,6 +2,7 @@ package com.jonataslaet.healthcare.services;
 
 import com.jonataslaet.healthcare.controllers.dtos.PatientRecordDTO;
 import com.jonataslaet.healthcare.entities.Patient;
+import com.jonataslaet.healthcare.exceptions.DuplicationException;
 import com.jonataslaet.healthcare.mappers.PatientMapper;
 import com.jonataslaet.healthcare.repositories.PatientRepository;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class PatientService {
     @Transactional
     public PatientRecordDTO createPatient(PatientRecordDTO patientRecordDTO) {
         if (patientRepository.existsByEmail(patientRecordDTO.email())) {
-            throw new IllegalArgumentException("Esse email já existe");
+            throw new DuplicationException("Esse email já existe");
         }
         Patient patient = PatientMapper.toEntity(patientRecordDTO);
         return PatientMapper.toDTO(patientRepository.save(patient));

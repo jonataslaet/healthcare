@@ -12,26 +12,41 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PatientMapperTests {
 
     @Test
-    void shouldMapDTOToEntity() {
+    void shouldMapNonSavedDTOToNonSavedEntity() {
 
-        PatientRecordDTO dto = PatientFactory.createSavedPatientRecord();
+        PatientRecordDTO nonSavedPatientRecord = PatientFactory.createNonSavedPatientRecord();
 
-        Patient entity = PatientMapper.toEntity(dto);
+        Patient nonSavedPatientEntity = PatientMapper.toEntity(nonSavedPatientRecord);
 
-        assertThat(entity)
+        assertThat(nonSavedPatientEntity)
             .usingRecursiveComparison()
-            .isEqualTo(dto);
+            .isEqualTo(nonSavedPatientRecord);
     }
 
     @Test
-    void shouldMapEntityToDTO() {
+    void shouldMapNonSavedEntityToNonSavedDTO() {
 
-        Patient entity = PatientFactory.createSavedPatientEntity();
+        Patient nonSavedPatientEntity = PatientFactory.createNonSavedPatientEntity();
 
-        PatientRecordDTO dto = PatientMapper.toDTO(entity);
+        PatientRecordDTO nonSavedPatientRecord = PatientMapper.toDTO(nonSavedPatientEntity);
 
-        assertThat(entity)
+        assertThat(nonSavedPatientEntity)
             .usingRecursiveComparison()
-            .isEqualTo(dto);
+            .isEqualTo(nonSavedPatientRecord);
     }
+
+    @Test
+    void shouldMapNonSavedDTOToSavedEntity() {
+
+        PatientRecordDTO nonSavedPatientDTO = PatientFactory.createNonSavedPatientRecord();
+
+        Patient savedPatientEntity = PatientMapper.toEntity(nonSavedPatientDTO);
+        savedPatientEntity.setId(1L);
+
+        assertThat(savedPatientEntity)
+            .usingRecursiveComparison()
+            .ignoringFields("id")
+            .isEqualTo(nonSavedPatientDTO);
+    }
+
 }
