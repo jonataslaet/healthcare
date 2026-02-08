@@ -6,7 +6,11 @@ import com.jonataslaet.healthcare.exceptions.DuplicationException;
 import com.jonataslaet.healthcare.exceptions.ResourceNotFoundException;
 import com.jonataslaet.healthcare.mappers.PatientMapper;
 import com.jonataslaet.healthcare.repositories.PatientRepository;
+import org.jspecify.annotations.NonNull;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,5 +61,9 @@ public class PatientService {
             throw new ResourceNotFoundException("Paciente não encontrado");
         }
         patientRepository.deleteById(patientId);
+    }
+
+    public Page<@NonNull PatientRecordDTO> findAll(Specification<@NonNull Patient> patientSpecification, Pageable pageable) {
+        return patientRepository.findAll(patientSpecification, pageable).map(PatientMapper::toDTO);
     }
 }

@@ -2,7 +2,10 @@ package com.jonataslaet.healthcare.controllers;
 
 import com.jonataslaet.healthcare.controllers.dtos.PatientRecordDTO;
 import com.jonataslaet.healthcare.services.PatientService;
+import com.jonataslaet.healthcare.specifications.SpecificationTemplate;
 import org.jspecify.annotations.NonNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +18,13 @@ public class PatientController {
 
     public PatientController(PatientService patientService) {
         this.patientService = patientService;
+    }
+
+    @GetMapping
+    public ResponseEntity<@NonNull Page<@NonNull PatientRecordDTO>> readAllPatients(
+        SpecificationTemplate.PatientSpecification patientSpecification, Pageable pageable) {
+        Page<@NonNull PatientRecordDTO> patientModelPage = patientService.findAll(patientSpecification, pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(patientModelPage);
     }
 
     @PostMapping

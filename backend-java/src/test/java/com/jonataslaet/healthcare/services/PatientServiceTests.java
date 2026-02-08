@@ -6,14 +6,21 @@ import com.jonataslaet.healthcare.exceptions.DuplicationException;
 import com.jonataslaet.healthcare.exceptions.ResourceNotFoundException;
 import com.jonataslaet.healthcare.factories.PatientFactory;
 import com.jonataslaet.healthcare.repositories.PatientRepository;
+import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -197,5 +204,47 @@ public class PatientServiceTests {
 
         verify(patientRepository, times(2)).existsById(patientIdToBeDeleted);
         verify(patientRepository, times(1)).deleteById(patientIdToBeDeleted);
+    }
+
+    @Test
+    void findAll_shouldReturnEmptyPage_whenRepositoryReturnsEmptyPage() {
+
+        Specification<@NonNull Patient> spec =
+            (root, query, cb) -> cb.conjunction();
+        Pageable pageable = PageRequest.of(0, 10);
+        when(patientRepository.findAll(spec, pageable)).thenReturn(Page.empty(pageable));
+
+        Page<@NonNull PatientRecordDTO> result = patientService.findAll(spec, pageable);
+
+        assertThat(result).isEmpty();
+        assertThat(result.getTotalElements()).isZero();
+
+        verify(patientRepository).findAll(spec, pageable);
+    }
+
+    @Test
+    void findAll_shouldReturnMappedPage_whenRepositoryReturnsResults() {
+        Specification<@NonNull Patient> spec =
+            (root, query, cb) -> cb.conjunction();
+        Pageable pageable = PageRequest.of(0, 10);
+
+        Patient patient = PatientFactory.createSavedPatientEntity();
+        Page<@NonNull Patient> patientPage = new PageImpl<>(List.of(patient), pageable, 1);
+        when(patientRepository.findAll(spec, pageable)).thenReturn(patientPage);
+
+        Page<@NonNull PatientRecordDTO> result = patientService.findAll(spec, pageable);
+
+        assertThat(result).hasSize(1);
+
+        PatientRecordDTO dto = result.getContent().getFirst();
+
+        assertThat(dto.id()).isEqualTo(patient.getId());
+        assertThat(dto.fullname()).isEqualTo(patient.getFullname());
+        assertThat(dto.email()).isEqualTo(patient.getEmail());
+        assertThat(dto.gender()).isEqualTo(patient.getGender());
+        assertThat(dto.weight()).isEqualTo(patient.getWeight());
+        assertThat(dto.height()).isEqualTo(patient.getHeight());
+
+        verify(patientRepository).findAll(spec, pageable);
     }
 }

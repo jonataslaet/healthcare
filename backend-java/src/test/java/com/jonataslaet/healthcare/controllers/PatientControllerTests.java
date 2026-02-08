@@ -7,26 +7,32 @@ import com.jonataslaet.healthcare.exceptions.DuplicationException;
 import com.jonataslaet.healthcare.exceptions.ResourceNotFoundException;
 import com.jonataslaet.healthcare.factories.PatientFactory;
 import com.jonataslaet.healthcare.services.PatientService;
+import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.ObjectMapper;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ActiveProfiles("test")
 @WebMvcTest(PatientController.class)
@@ -192,6 +198,38 @@ class PatientControllerTests {
             .andExpect(status().isNoContent()).andReturn().getResponse().getContentAsString();
 
         assertThat(responseJson).isEqualTo("");
+    }
+
+    @Test
+    void shouldReturnEmptyPage_whenServiceReturnsEmptyPage() throws Exception {
+
+        when(patientService.findAll(any(), any())).thenReturn(Page.empty());
+
+        mockMvc.perform(get("/patients").param("minWeight", "169"))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.content").isEmpty());
+
+        verify(patientService).findAll(any(), any());
+    }
+
+    @Test
+    void shouldReturnPatients_whenServiceReturnsPageWithContent() throws Exception {
+
+        PatientRecordDTO dto = PatientFactory.createSavedPatientRecord();
+        Page<@NonNull PatientRecordDTO> page = new PageImpl<>(
+            List.of(dto), PageRequest.of(0, 10), 1);
+        when(patientService.findAll(any(), any()))
+            .thenReturn(page);
+
+        mockMvc.perform(get("/patients").param("page", "0").param("size", "10"))
+            .andExpect(status().isOk()).andExpect(jsonPath("$.content").isNotEmpty())
+            .andExpect(jsonPath("$.content[0].id").value(dto.id()))
+            .andExpect(jsonPath("$.content[0].fullname").value(dto.fullname()))
+            .andExpect(jsonPath("$.content[0].email").value(dto.email()))
+            .andExpect(jsonPath("$.content[0].gender").value(dto.gender().name()))
+            .andExpect(jsonPath("$.content[0].weight").value(dto.weight()))
+            .andExpect(jsonPath("$.content[0].height").value(dto.height()));
+
+        verify(patientService).findAll(any(), any());
     }
 
     @ParameterizedTest
