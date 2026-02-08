@@ -28,4 +28,12 @@ public class PatientController {
         PatientRecordDTO foundPatient = patientService.getPatientById(patientId);
         return ResponseEntity.ok(foundPatient);
     }
+
+    @PutMapping("/{patientId}")
+    public ResponseEntity<@NonNull PatientRecordDTO> updatePatient(
+        @PathVariable("patientId") Long patientId, @RequestBody PatientRecordDTO patientRecordDTO) {
+
+        PatientRecordDTO updatedPatient = patientService.updatePatient(patientId, patientRecordDTO);
+        return ResponseEntity.ok(updatedPatient);
+    }
 }

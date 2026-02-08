@@ -6,6 +6,7 @@ import com.jonataslaet.healthcare.exceptions.DuplicationException;
 import com.jonataslaet.healthcare.exceptions.ResourceNotFoundException;
 import com.jonataslaet.healthcare.mappers.PatientMapper;
 import com.jonataslaet.healthcare.repositories.PatientRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,5 +37,17 @@ public class PatientService {
     public Patient getPatientEntity(Long patientId) {
         return patientRepository.findById(patientId).orElseThrow(() ->
             new ResourceNotFoundException("Paciente não encontrado"));
+    }
+
+    @Transactional
+    public PatientRecordDTO updatePatient(Long patientId, PatientRecordDTO patientRecordDTO) {
+        Patient patientEntity = getPatientEntity(patientId);
+        if (!patientEntity.getEmail().equalsIgnoreCase(patientRecordDTO.email())) {
+            if (patientRepository.existsByEmail(patientRecordDTO.email())) {
+                throw new DuplicationException("Esse email já existe");
+            }
+        }
+        BeanUtils.copyProperties(patientRecordDTO, patientEntity, "id");
+        return PatientMapper.toDTO(patientRepository.save(patientEntity));
     }
 }
