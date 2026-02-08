@@ -181,6 +181,18 @@ class PatientControllerTests {
             .andExpect(content().string(containsString("Paciente não encontrado")));
     }
 
+    @Test
+    void shouldDeletePatientById() throws Exception {
+
+        PatientRecordDTO dto = PatientFactory.createSavedPatientRecord();
+
+        when(patientService.getPatientById(existingPatientId)).thenReturn(dto);
+
+        String responseJson = mockMvc.perform(delete("/patients/{id}", existingPatientId))
+            .andExpect(status().isNoContent()).andReturn().getResponse().getContentAsString();
+
+        assertThat(responseJson).isEqualTo("");
+    }
 
     @ParameterizedTest
     @EnumSource(GenderEnum.class)

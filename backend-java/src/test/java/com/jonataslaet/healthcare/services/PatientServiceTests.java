@@ -149,4 +149,53 @@ public class PatientServiceTests {
         verify(patientRepository, never()).save(any());
     }
 
+    @Test
+    void getPatientById_shouldReturnWhenFound() {
+        Patient expectedPatient = PatientFactory.createSavedPatientEntity();
+        when(patientRepository.findById(existingPatientId)).thenReturn(Optional.of(expectedPatient));
+
+        PatientRecordDTO result = patientService.getPatientById(existingPatientId);
+
+        assertThat(result).usingRecursiveComparison().isEqualTo(expectedPatient);
+        verify(patientRepository).findById(existingPatientId);
+    }
+
+    @Test
+    void deletePatientById_shouldThrowWhenNotFound() {
+
+        when(patientRepository.existsById(nonExistingPatientId)).thenReturn(false);
+
+        assertThatThrownBy(() -> patientService.deletePatient(nonExistingPatientId))
+            .isInstanceOf(ResourceNotFoundException.class).hasMessage("Paciente não encontrado");
+
+        verify(patientRepository, times(0)).deleteById(nonExistingPatientId);
+    }
+
+    @Test
+    void deletePatientById_shouldDeleteWhenPatientExists() {
+
+        when(patientRepository.existsById(existingPatientId)).thenReturn(true);
+        doNothing().when(patientRepository).deleteById(existingPatientId);
+
+        patientService.deletePatient(existingPatientId);
+
+        verify(patientRepository, times(1)).deleteById(existingPatientId);
+    }
+
+    @Test
+    void deletePatientById_shouldThrowWhenDeleteMoreThanOnce() {
+
+        final Long patientIdToBeDeleted = existingPatientId;
+
+        when(patientRepository.existsById(patientIdToBeDeleted)).thenReturn(true).thenReturn(false);
+        doNothing().when(patientRepository).deleteById(patientIdToBeDeleted);
+
+        patientService.deletePatient(patientIdToBeDeleted);
+
+        assertThatThrownBy(() -> patientService.deletePatient(patientIdToBeDeleted))
+            .isInstanceOf(ResourceNotFoundException.class).hasMessage("Paciente não encontrado");
+
+        verify(patientRepository, times(2)).existsById(patientIdToBeDeleted);
+        verify(patientRepository, times(1)).deleteById(patientIdToBeDeleted);
+    }
 }

@@ -50,4 +50,12 @@ public class PatientService {
         BeanUtils.copyProperties(patientRecordDTO, patientEntity, "id");
         return PatientMapper.toDTO(patientRepository.save(patientEntity));
     }
+
+    @Transactional
+    public void deletePatient(Long patientId) {
+        if (!patientRepository.existsById(patientId)) {
+            throw new ResourceNotFoundException("Paciente não encontrado");
+        }
+        patientRepository.deleteById(patientId);
+    }
 }
