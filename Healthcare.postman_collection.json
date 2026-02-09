@@ -1,0 +1,208 @@
+{
+  "info": {
+    "_postman_id": "2cbf9e53-59c5-4973-8d1e-2714612f0dc3",
+    "name": "Healthcare",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "6013042"
+  },
+  "item": [
+    {
+      "name": "patients",
+      "item": [
+        {
+          "name": "POST /patients",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"fullname\": \"Jonatas Laet\",\n    \"email\": \"jonataslaet2@gmail.com\",\n    \"birthDate\": \"1990-01-01\",\n    \"gender\": \"MALE\",\n    \"weight\": 93.3,\n    \"height\": 169\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{protocol}}://{{hostname}}{{port}}/patients",
+              "protocol": "{{protocol}}",
+              "host": [
+                "{{hostname}}{{port}}"
+              ],
+              "path": [
+                "patients"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /patients/{id}",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{protocol}}://{{hostname}}{{port}}/patients/1",
+              "protocol": "{{protocol}}",
+              "host": [
+                "{{hostname}}{{port}}"
+              ],
+              "path": [
+                "patients",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET /patients",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"fullname\": \"Jonatas Laet\",\n    \"email\": \"jonataslaet@gmail.com\",\n    \"birthdate\": \"1990-01-01\",\n    \"gender\": \"MALE\",\n    \"weight\": 93.3,\n    \"height\": 169\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{protocol}}://{{hostname}}{{port}}/patients?fullname=Jonatas&email=onataslaet2&birthDate=1990-01-01&genders=MALE,FEMALE&minWeight=93.30&maxWeight=169.00&minHeight=169.00&maxHeight=169.00",
+              "protocol": "{{protocol}}",
+              "host": [
+                "{{hostname}}{{port}}"
+              ],
+              "path": [
+                "patients"
+              ],
+              "query": [
+                {
+                  "key": "fullname",
+                  "value": "Jonatas"
+                },
+                {
+                  "key": "email",
+                  "value": "onataslaet2"
+                },
+                {
+                  "key": "birthDate",
+                  "value": "1990-01-01"
+                },
+                {
+                  "key": "genders",
+                  "value": "MALE,FEMALE"
+                },
+                {
+                  "key": "minWeight",
+                  "value": "93.30"
+                },
+                {
+                  "key": "maxWeight",
+                  "value": "169.00"
+                },
+                {
+                  "key": "minHeight",
+                  "value": "169.00"
+                },
+                {
+                  "key": "maxHeight",
+                  "value": "169.00"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT /patients/{id}",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"fullname\": \"Jonatas Blendo dos Santos Laet\",\n    \"email\": \"jonataslaet@gmail.com\",\n    \"birthdate\": \"1990-01-01\",\n    \"gender\": \"MALE\",\n    \"weight\": 93.3,\n    \"height\": 169\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{protocol}}://{{hostname}}{{port}}/patients/1",
+              "protocol": "{{protocol}}",
+              "host": [
+                "{{hostname}}{{port}}"
+              ],
+              "path": [
+                "patients",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE /patients/{id}",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"fullname\": \"Jonatas Blendo dos Santos Laet\",\n    \"email\": \"jonataslaet@gmail.com\",\n    \"birthdate\": \"1990-01-01\",\n    \"gender\": \"MALE\",\n    \"weight\": 93.3,\n    \"height\": 169\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{protocol}}://{{hostname}}{{port}}/patients/1",
+              "protocol": "{{protocol}}",
+              "host": [
+                "{{hostname}}{{port}}"
+              ],
+              "path": [
+                "patients",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
