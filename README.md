@@ -19,6 +19,7 @@ No momento, o escopo da aplicação é um **CRUD de pacientes**, responsável ex
 - [Utilizando a API com Postman](#-utilizando-a-api-com-postman)
 - [Perguntas e Respostas](#-perguntas-e-respostas)
 - [Considerações sobre Escalabilidade, Segurança e Manutenção](#-considerações-sobre-escalabilidade-segurança-e-manutenção)
+- [Open API](#-openapi)
 
 ---
 
@@ -458,5 +459,19 @@ Com isso, eu deixei o projeto bem preparado para futura integração com mecanis
 ```
 
 Eu desenvolvi esse projeto visando à facilidade de manutenção não somente para mim, como também para outros desenvolvedores que venham a desenvolvê-lo também.
+
+---
+## 📘 OpenAPI
+
+Eu utilizei neste projeto o **OpenAPI (Swagger)** para documentação interativa de API REST.
+
+A documentação foi configurada utilizando a biblioteca **springdoc-openapi versão 2.8.3**, que se mostrou compatível com **Spring Boot 4.0.2** no contexto deste projeto.
+
+### Acesso à documentação
+
+Com a aplicação em execução, a interface interativa pode ser acessada em:
+
+```text
+http://localhost:8080/swagger-ui.html
 
 ---
