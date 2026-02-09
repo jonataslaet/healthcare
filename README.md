@@ -18,6 +18,8 @@ No momento, o escopo da aplicação é um **CRUD de pacientes**, responsável ex
 - [Como Executar o Projeto](#-como-executar-o-projeto)
 - [Utilizando a API com Postman](#-utilizando-a-api-com-postman)
 - [Perguntas e Respostas](#-perguntas-e-respostas)
+- [Considerações sobre Escalabilidade, Segurança e Manutenção](#-considerações-sobre-escalabilidade-segurança-e-manutenção)
+
 ---
 
 ## ✨ Funcionalidades
@@ -150,6 +152,15 @@ Os testes unitários validam regras de negócio e comportamentos isolados, sem d
 - Não são utilizados containers ou infraestrutura externa
 - Os testes são rápidos, determinísticos e adequados para CI
 ```
+
+#### Como executar os testes unitários
+
+1. Pela linha de comando, abra o diretório **`backend-java`**.
+2. Digite o seguinte comando e aperte enter:
+```bash
+mvn clean test
+```
+
 ---
 ## 🔄 CI/CD
 
@@ -408,5 +419,44 @@ Os principais critérios que utilizo são clareza e acessibilidade, nessa ordem.
 - Compartilhamento de conhecimento por meio de code reviews e discussões técnicas
 ```
 A abordagem acima reduz dependência de conhecimento tácito e facilita o onboarding de novos membros da equipe.
+
+---
+
+## 📈 Considerações sobre Escalabilidade, Segurança e Manutenção em relação a este projeto
+
+Mesmo com o escopo atual deste projeto sendo um CRUD simples, eu o desenvolvi considerando boas práticas que facilitam sua evolução ao longo do tempo.
+
+### Quanto à escalabilidade
+
+```text
+- Arquitetura em camadas, facilitando evolução do domínio
+- Separação clara entre backend e possíveis clientes (frontend, mobile)
+- Estrutura preparada para inclusão de novas entidades e módulos
+- Uso de DTOs para desacoplamento entre API e domínio
+```
+
+Na abordagem que utilizei acima, é facilmente possível serem adicionadas novas funcionalidades sem grandes refatorações estruturais.
+
+### Quanto à segurança
+
+```text
+- Validação de entradas para evitar dados inválidos
+- Tratamento centralizado de exceções
+- Padronização de respostas de erro
+- Não exposição de detalhes internos da aplicação
+```
+
+Com isso, eu deixei o projeto bem preparado para futura integração com mecanismos de autenticação e autorização, como o Spring Security.
+
+### Quanto à manutenção
+
+```text
+- Código organizado e legível
+- Testes automatizados em diferentes camadas
+- Separação de responsabilidades
+- Configuração por profiles e variáveis de ambiente
+```
+
+Eu desenvolvi esse projeto visando à facilidade de manutenção não somente para mim, como também para outros desenvolvedores que venham a desenvolvê-lo também.
 
 ---
