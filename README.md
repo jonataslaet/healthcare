@@ -17,6 +17,7 @@ No momento, o escopo da aplicação é um **CRUD de pacientes**, responsável ex
 - [Testes](#-testes)
 - [Como Executar o Projeto](#-como-executar-o-projeto)
 - [Utilizando a API com Postman](#-utilizando-a-api-com-postman)
+- [Perguntas e Respostas](#-perguntas-e-respostas)
 ---
 
 ## ✨ Funcionalidades
@@ -248,7 +249,7 @@ Resultado esperado:
 - A aplicação irá se conectar ao PostgreSQL (via Docker)
 - O Spring Boot será iniciado normalmente
 - A API ficará disponível em http://localhost:8080
-
+---
 ## 📮 Utilizando a API com Postman
 
 A API pode ser utilizada por meio do **Postman**.  
@@ -271,7 +272,7 @@ No arquivo de Environment, é necessário configurar as variáveis conforme o am
 ```text
 protocol = http
 hostname = localhost
-port     = 8080
+port     = :8080
 ```
 ##### Executando as requisições
 1. Certifique-se de que a aplicação Spring Boot está em execução.
@@ -281,4 +282,131 @@ port     = 8080
 - O uso de Environment evita hardcoding de URLs
 - Facilita a troca entre ambientes (local, homologação, produção)
 - Mantém a Collection reutilizável
+---
+## ❓ Perguntas e respostas
+
+A seguir estão as respostas às perguntas propostas no teste técnico, formuladas de maneira **sucinta, objetiva e alinhada ao perfil de um desenvolvedor backend Java pleno**.
+
+
+
+### 01. Como você escolheria a stack tecnológica para esse projeto?
+
+Eu escolheria a stack considerando **maturidade**, **produtividade**, **ecossistema** e **aderência ao problema**. No caso deste projeto, escolhi Java com Spring Boot, por ser minha stack de maior expertise técnica, e também por oferecer robustez, ampla adoção no mercado, excelente suporte a testes e facilidade de integração com bancos relacionais, sendo adequada para APIs REST corporativas.
+```text
+- Evolução gradual da aplicação
+- Manutenção de longo prazo
+- Padronização de código
+- Integração com ferramentas de CI/CD
+```
+
+### 02. Quais critérios usa para definir arquitetura de backend, frontend e mobile?
+
+Existem critérios diversos que poderiam ser adotados para essa finalidade. Eu cito alguns que eu usaria a seguir:
+
+```text
+- Complexidade do domínio
+- Escalabilidade esperada
+- Separação de responsabilidades
+- Facilidade de manutenção
+- Perfil da equipe
+```
+No backend, priorizo arquiteturas simples e bem estruturadas. No frontend e mobile, foco em desacoplamento via API e reutilização de contratos.
+
+### 03. Como garantir qualidade de código na equipe?
+
+A qualidade de código é garantida por meio de práticas contínuas adotadas pelo time ao longo do desenvolvimento, dentre as quais posso citar: 
+
+```text
+- Testes automatizados em diferentes camadas
+- Revisões de código (code review)
+- Adoção de padrões e convenções
+- Integração contínua com execução de testes
+- Código simples, legível e bem organizado
+```
+
+Essas práticas reduzem erros, facilitam a manutenção e promovem compartilhamento de conhecimento entre os membros da equipe.
+
+### 04. Como você define priorização de tarefas em uma sprint?
+
+Eu definiria a priorização considerando uma combinação de fatores técnicos e de negócio, dentre os quais posso citar alguns: 
+
+```text
+- Valor de negócio entregue
+- Dependências entre tarefas
+- Riscos técnicos
+- Esforço e complexidade
+```
+As decisões são tomadas de forma colaborativa, normalmente durante o refinamento do backlog, buscando maximizar valor entregue e minimizar riscos ao longo do sprint. 
+
+### 05. Qual sua estratégia para gerenciar integrações com serviços externos?
+
+Minha estratégia certamente seria focada em **isolamento**, **resiliência** e **facilidade de manutenção**.
+
+```text
+- Isolar integrações em camadas específicas
+- Utilizar contratos bem definidos
+- Tratar falhas, timeouts e exceções
+- Mockar serviços externos em testes
+```
+
+A abordagem acima reduz acoplamento, facilita testes automatizados e minimiza impactos de falhas externas na aplicação. 
+
+### 06. Como você lidaria com falhas em produção?
+
+Eu lidaria da maneira mais rápida e controlada possível, sempre me baseando em informações confiáveis, como:
+
+```text
+- Monitoramento e alertas para detecção rápida
+- Logs claros e estruturados
+- Tratamento adequado de exceções
+- Correções incrementais e rollback quando necessário
+```
+
+O objetivo é minimizar o impacto para o usuário final e garantir estabilidade do sistema enquanto a causa raiz é identificada e corrigida.
+
+### 07. Qual abordagem adotaria para CI/CD nessa API?
+
+Eu adotaria uma abordagem de CI/CD focada em **automação**, **simplicidade** e **confiabilidade**, e foi justamente o que adotei neste projeto.
+
+```text
+- Build automatizado a cada push e pull request
+- Execução de testes automatizados no pipeline
+- Separação clara por ambientes
+- Pipelines rápidos e previsíveis
+```
+Essa estratégia ajuda a evitar regressões, garante qualidade contínua do código e facilita a evolução segura da aplicação.
+
+### 08. Como você decide entre REST, GraphQL ou outra forma de API?
+
+Eu primeiramente olho o contexto e as necessidade do projeto para então decidir entre elas.
+
+```text
+- REST: simplicidade, padronização e facilidade de manutenção
+- GraphQL: múltiplos clientes e necessidade de consultas flexíveis
+```
+Entendo que, para APIs CRUD simples como esta, a abordagem REST foi a escolha mais adequada. 
+
+### 09. Como avalia desempenho e otimização de APIs?
+
+Eu avalio desempenho e a otimização de APIs com base em dados reais e métricas observáveis, evitando otimizações prematuras. Cito algumas:
+
+```text
+- Análise de métricas e logs
+- Testes de carga e estresse
+- Avaliação de consultas ao banco de dados
+- Uso adequado de índices e redução de payloads
+```
+
+### 10. Como você documenta decisões técnicas e garante o conhecimento compartilhado na equipe?
+
+Os principais critérios que utilizo são clareza e acessibilidade, nessa ordem. O objetivo é facilitar o compartilhamento de conhecimento e a manutenção do projeto.
+
+```text
+- README atualizado com decisões relevantes
+- Documentação de arquitetura e padrões adotados
+- Código legível e bem organizado
+- Compartilhamento de conhecimento por meio de code reviews e discussões técnicas
+```
+A abordagem acima reduz dependência de conhecimento tácito e facilita o onboarding de novos membros da equipe.
+
 ---
