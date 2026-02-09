@@ -80,7 +80,8 @@ public class PatientController {
 
     @PutMapping("/{patientId}")
     public ResponseEntity<@NonNull PatientRecordDTO> updatePatient(
-        @PathVariable("patientId") Long patientId, @RequestBody PatientRecordDTO patientRecordDTO) {
+        @PathVariable("patientId") Long patientId, @RequestBody
+        @JsonView(PatientRecordDTO.PatientView.UpdatePatient.class) PatientRecordDTO patientRecordDTO) {
 
         PatientRecordDTO updatedPatient = patientService.updatePatient(patientId, patientRecordDTO);
         return ResponseEntity.ok(updatedPatient);
