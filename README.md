@@ -11,14 +11,15 @@ No momento, o escopo da aplicação é um **CRUD de pacientes**, responsável ex
 ## 📑 Sumário
 
 - [Funcionalidades](#-funcionalidades)
-- [Tecnologias Utilizadas](#-tecnologias-utilizadas)
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
 - [Arquiteturas Utilizadas](#-arquiteturas-utilizadas)
 - [Tratamento de Erros](#-tratamento-de-erros)
 - [Testes](#-testes)
-- [Como Executar o Projeto](#-como-executar-o-projeto)
+- [CI/CD](#-cicd)
+- [Como Executar o Projeto](#como-executar-o-projeto)
 - [Utilizando a API com Postman](#-utilizando-a-api-com-postman)
 - [Perguntas e Respostas](#-perguntas-e-respostas)
-- [Considerações sobre Escalabilidade, Segurança e Manutenção](#-considerações-sobre-escalabilidade-segurança-e-manutenção)
+- [Considerações sobre Escalabilidade, Segurança e Manutenção](#-consideracoes-sobre-escalabilidade-seguranca-e-manutencao)
 - [Open API](#-openapi)
 
 ---
@@ -58,7 +59,6 @@ O projeto adota, de forma complementar, as seguintes arquiteturas, cada uma atua
 A aplicação segue o modelo **cliente–servidor**, no qual o backend expõe uma API REST que pode ser consumida por diferentes clientes, como aplicações web, mobile ou ferramentas de integração.  
 No cenário atual, a API é consumida diretamente (ex.: Postman), mas foi pensada para integração futura com um frontend dedicado.
 
----
 
 ### Arquitetura Monolítica
 
@@ -67,7 +67,6 @@ Apesar de estar organizado em um repositório no formato **monorepo**, com a pos
 
 Essa abordagem facilita o desenvolvimento inicial, manutenção e testes, ao mesmo tempo em que não impede uma evolução futura para outros estilos arquiteturais, se necessário.
 
----
 
 ### Arquitetura em Camadas
 
@@ -114,10 +113,11 @@ Todos os erros da API seguem um **contrato padrão**.
 ### Status HTTP utilizados
 
 ```text
-400 → Requisição inválida
-404 → Recurso não encontrado
-409 → Conflito (duplicidade)
-422 → Conteúdo inválido (ex: enum inválido)
+200 → A requisição não é de criação de recurso, e ocorreu com sucesso
+201 → A requisição é de criação de recurso, e ocorreu com sucesso
+400 → Erro de requisição (conteúdo inválido, exemplo: formato inválido de data)
+404 → Recurso não encontrado (exemplo: identificador inexistente de um paciente)
+409 → Erro de requisição (duplicidade, exemplo: email duplicado)
 ```
 ---
 ## 🧪 Testes
@@ -146,7 +146,7 @@ Os testes unitários validam regras de negócio e comportamentos isolados, sem d
 - PatientControllerTests
   - Testes de endpoints REST
   - Testes de sucesso (200 / 201)
-  - Testes de erro (404 / 409 / 422)
+  - Testes de erro (404 / 409)
   - Validação do contrato de resposta HTTP
   
 - Nenhum teste depende de banco de dados real
@@ -163,6 +163,7 @@ mvn clean test
 ```
 
 ---
+
 ## 🔄 CI/CD
 
 O projeto utiliza **GitHub Actions** para automação de **build e execução de testes**, garantindo qualidade contínua do código a cada alteração.
@@ -175,7 +176,9 @@ O projeto utiliza **GitHub Actions** para automação de **build e execução de
 - Foco em validação rápida e determinística
 - Preparado para ambiente de monorepo
 ```
+
 ---
+
 ## ▶️ Como Executar o Projeto
 Os passos a seguir deve ser considerados na ordem em que estão dispostos.
 ### Pré-requisitos
@@ -261,7 +264,9 @@ Resultado esperado:
 - A aplicação irá se conectar ao PostgreSQL (via Docker)
 - O Spring Boot será iniciado normalmente
 - A API ficará disponível em http://localhost:8080
+
 ---
+
 ## 📮 Utilizando a API com Postman
 
 A API pode ser utilizada por meio do **Postman**.  
@@ -294,7 +299,9 @@ port     = :8080
 - O uso de Environment evita hardcoding de URLs
 - Facilita a troca entre ambientes (local, homologação, produção)
 - Mantém a Collection reutilizável
+
 ---
+
 ## ❓ Perguntas e respostas
 
 A seguir estão as respostas às perguntas propostas no teste técnico, formuladas de maneira **sucinta, objetiva e alinhada ao perfil de um desenvolvedor backend Java pleno**.
@@ -423,7 +430,7 @@ A abordagem acima reduz dependência de conhecimento tácito e facilita o onboar
 
 ---
 
-## 📈 Considerações sobre Escalabilidade, Segurança e Manutenção em relação a este projeto
+## 📈 Considerações sobre Escalabilidade, Segurança e Manutenção
 
 Mesmo com o escopo atual deste projeto sendo um CRUD simples, eu o desenvolvi considerando boas práticas que facilitam sua evolução ao longo do tempo.
 
@@ -473,5 +480,5 @@ Com a aplicação em execução, a interface interativa pode ser acessada em:
 
 ```text
 http://localhost:8080/swagger-ui.html
-
+```
 ---
