@@ -10,21 +10,21 @@ No momento, o escopo da aplicação é um **CRUD de pacientes**, responsável ex
 
 ## 📑 Sumário
 
-- [Funcionalidades](#-funcionalidades)
-- [Tecnologias Utilizadas](#tecnologias-utilizadas)
-- [Arquiteturas Utilizadas](#-arquiteturas-utilizadas)
-- [Tratamento de Erros](#-tratamento-de-erros)
-- [Testes](#-testes)
-- [CI/CD](#-cicd)
-- [Como Executar o Projeto](#como-executar-o-projeto)
-- [Utilizando a API com Postman](#-utilizando-a-api-com-postman)
-- [Perguntas e Respostas](#-perguntas-e-respostas)
-- [Considerações sobre Escalabilidade, Segurança e Manutenção](#-consideracoes-sobre-escalabilidade-seguranca-e-manutencao)
-- [Open API](#-openapi)
+- ✨ [Funcionalidades](#funcionalidades)
+- 🛠️ [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- 🧱 [Arquiteturas Utilizadas](#arquiteturas-utilizadas)
+- 🚦 [Tratamento de Erros](#tratamento-de-erros)
+- 🧪 [Testes](#testes)
+- 🔄 [CI/CD](#cicd)
+- ▶️ [Como Executar o Projeto](#como-executar-o-projeto)
+- 📮 [Utilizando a API com Postman](#utilizando-a-api-com-postman)
+- ❓ [Perguntas e Respostas](#perguntas-e-respostas)
+- 📌 [Considerações sobre Escalabilidade, Segurança e Manutenção](#consideracoes-sobre-escalabilidade-seguranca-e-manutencao)
+- 📘 [Open API](#openapi)
 
 ---
 
-## ✨ Funcionalidades
+## Funcionalidades
 
 - CRUD de pacientes
 - Listagem paginada e filtrada
@@ -35,7 +35,7 @@ No momento, o escopo da aplicação é um **CRUD de pacientes**, responsável ex
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 - **Java 21**
 - **Spring Boot 4.0.2**
@@ -50,7 +50,7 @@ No momento, o escopo da aplicação é um **CRUD de pacientes**, responsável ex
 
 ---
 
-## 🧱 Arquiteturas Utilizadas
+## Arquiteturas Utilizadas
 
 O projeto adota, de forma complementar, as seguintes arquiteturas, cada uma atuando em um nível diferente do sistema:
 
@@ -95,7 +95,7 @@ Repository
 
 ---
 
-## 🚦 Tratamento de Erros
+## Tratamento de Erros
 
 Todos os erros da API seguem um **contrato padrão**.
 
@@ -120,7 +120,7 @@ Todos os erros da API seguem um **contrato padrão**.
 409 → Erro de requisição (duplicidade, exemplo: email duplicado)
 ```
 ---
-## 🧪 Testes
+## Testes
 
 O projeto possui uma estratégia de testes focada em **qualidade, isolamento e previsibilidade**, cobrindo diferentes camadas da aplicação de forma adequada.
 
@@ -164,7 +164,7 @@ mvn clean test
 
 ---
 
-## 🔄 CI/CD
+## CI/CD
 
 O projeto utiliza **GitHub Actions** para automação de **build e execução de testes**, garantindo qualidade contínua do código a cada alteração.
 
@@ -179,7 +179,7 @@ O projeto utiliza **GitHub Actions** para automação de **build e execução de
 
 ---
 
-## ▶️ Como Executar o Projeto
+## Como Executar o Projeto
 Os passos a seguir deve ser considerados na ordem em que estão dispostos.
 ### Pré-requisitos
 
@@ -199,7 +199,7 @@ healthcare/
 │   └── mvnw
 ```
 
-### 📄 Criar arquivo de variáveis de ambiente (.env)
+### Criar arquivo de variáveis de ambiente (.env)
 
 Crie um arquivo chamado **`.env`** no diretório principal do projeto com o seguinte conteúdo:
 
@@ -209,7 +209,7 @@ POSTGRES_PASSWORD=password-postgres
 POSTGRES_DB=database-postgres
 ```
 
-### 🐳 Executar Docker Container
+### Executar Docker Container
 
 O projeto disponibiliza um container Docker para execução de um **SGBD PostgreSQL**, facilitando a execução local e preparando o ambiente para cenários mais próximos de produção. Os comandos a seguir são executados a partir do diretório principal do projeto.
 
@@ -236,10 +236,10 @@ O comando acima faz o seguinte:
 - Remove a rede healthcare-network
 - Remove os volumes associados (-v), apagando os dados do banco
 
-### ▶️ Executar a Aplicação (Backend)
+### Executar a Aplicação (Backend)
 Há mais uma forma de executar a aplicação. Neste caso do backend, pelo menos até o momento, será exposta apenas a que é pelo ambiente de desenvolvimento integrado (IDE).
 
-#### ▶️ Pela IDE
+#### Pela IDE
 Também é possível executar a aplicação diretamente pela **IDE de sua preferência** (IntelliJ IDEA, Eclipse, VS Code, etc.), configurando as variáveis de ambiente na configuração de execução.
 
 ##### Passo a passo
@@ -267,7 +267,7 @@ Resultado esperado:
 
 ---
 
-## 📮 Utilizando a API com Postman
+## Utilizando a API com Postman
 
 A API pode ser utilizada por meio do **Postman**.  
 O projeto disponibiliza **dois arquivos** para importação:
@@ -302,7 +302,7 @@ port     = :8080
 
 ---
 
-## ❓ Perguntas e respostas
+## Perguntas e respostas
 
 A seguir estão as respostas às perguntas propostas no teste técnico, formuladas de maneira **sucinta, objetiva e alinhada ao perfil de um desenvolvedor backend Java pleno**.
 
@@ -430,7 +430,7 @@ A abordagem acima reduz dependência de conhecimento tácito e facilita o onboar
 
 ---
 
-## 📈 Considerações sobre Escalabilidade, Segurança e Manutenção
+## Consideracoes sobre Escalabilidade, Seguranca e Manutencao
 
 Mesmo com o escopo atual deste projeto sendo um CRUD simples, eu o desenvolvi considerando boas práticas que facilitam sua evolução ao longo do tempo.
 
@@ -468,7 +468,7 @@ Com isso, eu deixei o projeto bem preparado para futura integração com mecanis
 Eu desenvolvi esse projeto visando à facilidade de manutenção não somente para mim, como também para outros desenvolvedores que venham a desenvolvê-lo também.
 
 ---
-## 📘 OpenAPI
+## OpenAPI
 
 Eu utilizei neste projeto o **OpenAPI (Swagger)** para documentação interativa de API REST.
 
