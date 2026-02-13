@@ -19,7 +19,7 @@ No momento, o escopo da aplicação é um **CRUD de pacientes**, responsável ex
 - ▶️ [Como Executar o Projeto](#como-executar-o-projeto)
 - 📮 [Utilizando a API com Postman](#utilizando-a-api-com-postman)
 - ❓ [Perguntas e Respostas](#perguntas-e-respostas)
-- [Considerações sobre Escalabilidade, Segurança e Manutenção](#manutencao)
+- [Considerações sobre Escalabilidade, Segurança e Manutenção](#escalabilidade)
 - 📘 [Open API](#openapi)
 
 ---
@@ -430,7 +430,7 @@ A abordagem acima reduz dependência de conhecimento tácito e facilita o onboar
 
 ---
 
-## Manutenção
+## Escalabilidade
 
 Mesmo com o escopo atual deste projeto sendo um CRUD simples, eu o desenvolvi considerando boas práticas que facilitam sua evolução ao longo do tempo.
 
