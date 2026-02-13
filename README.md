@@ -19,7 +19,7 @@ No momento, o escopo da aplicação é um **CRUD de pacientes**, responsável ex
 - ▶️ [Como Executar o Projeto](#como-executar-o-projeto)
 - 📮 [Utilizando a API com Postman](#utilizando-a-api-com-postman)
 - ❓ [Perguntas e Respostas](#perguntas-e-respostas)
-- 📌 [Considerações sobre Escalabilidade, Segurança e Manutenção](#consideracoes-sobre-escalabilidade-seguranca-e-manutencao)
+- [Considerações sobre Escalabilidade, Segurança e Manutenção](#consideracoes-sobre-escalabilidade-seguranca-e-manutencao)
 - 📘 [Open API](#openapi)
 
 ---
